@@ -1,0 +1,32 @@
+{
+  "name": "@munhoz/ui",
+  "version": "0.1.0",
+  "type": "module",
+  "sideEffects": [
+    "**/*.css",
+    "**/*.vue"
+  ],
+  "files": [
+    "dist",
+    "src"
+  ],
+  "main": "./src/index.js",
+  "module": "./src/index.js",
+  "exports": {
+    ".": "./src/index.js",
+    "./style.css": "./src/styles.css"
+  },
+  "scripts": {
+    "build": "vite build",
+    "dev": "vite build --watch"
+  },
+  "peerDependencies": {
+    "remixicon": "^4.6.0",
+    "vue": "^3.5.0"
+  },
+  "devDependencies": {
+    "@vitejs/plugin-vue": "^6.0.1",
+    "vite": "^7.1.7",
+    "vue": "^3.5.21"
+  }
+}
