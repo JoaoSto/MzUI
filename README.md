@@ -1,4 +1,4 @@
-# @munhoz/ui
+# @joaosto/ui
 
 Kit de UI Vue 3 (botões e inputs) extraído do Design Lab. Visual dark, fonte monoespaçada, ícones Remixicon.
 
@@ -6,14 +6,29 @@ Requer **Vue 3.5+**, **Vite** (para compilar os SFCs) e **Remixicon**.
 
 ## Instalação
 
-```bash
-npm install ../MzUI
-# ou, no package.json:
-# "@munhoz/ui": "file:../MzUI"
+Pacote privado no [GitHub Packages](https://github.com/JoaoSto/MzUI/pkgs/npm/ui). No projeto consumidor, crie um `.npmrc`:
+
+```
+@joaosto:registry=https://npm.pkg.github.com
+//npm.pkg.github.com/:_authToken=${NODE_AUTH_TOKEN}
 ```
 
+O token é um [PAT classic](https://github.com/settings/tokens) com `read:packages` e `repo`. Coloque-o em `NODE_AUTH_TOKEN` ou no `~/.npmrc` (não commite o token).
+
 ```bash
+npm install @joaosto/ui
 npm install vue remixicon
+```
+
+No `vite.config.js` do app:
+
+```js
+export default defineConfig({
+  plugins: [vue()],
+  optimizeDeps: {
+    exclude: ['@joaosto/ui'],
+  },
+})
 ```
 
 No `main.js` do app:
@@ -26,38 +41,22 @@ import App from './App.vue'
 createApp(App).mount('#app')
 ```
 
-Se o pacote estiver fora da raiz do app, libere a pasta no Vite:
+Desenvolvimento local, sem publicar:
 
-```js
-import { fileURLToPath, URL } from 'node:url'
-import { defineConfig, searchForWorkspaceRoot } from 'vite'
-import vue from '@vitejs/plugin-vue'
-
-const mzUiRoot = fileURLToPath(new URL('../MzUI', import.meta.url))
-
-export default defineConfig({
-  plugins: [vue()],
-  server: {
-    fs: {
-      allow: [searchForWorkspaceRoot(process.cwd()), mzUiRoot],
-    },
-  },
-  optimizeDeps: {
-    exclude: ['@munhoz/ui'],
-  },
-})
+```bash
+npm install ../MzUI
 ```
 
 ## Uso
 
 ```js
-import { Button, Input } from '@munhoz/ui'
+import { Button, Input } from '@joaosto/ui'
 ```
 
 Ou como plugin (registra `MzButton` e `MzInput`):
 
 ```js
-import MzUi from '@munhoz/ui'
+import MzUi from '@joaosto/ui'
 app.use(MzUi)
 ```
 
@@ -91,7 +90,7 @@ O texto do botão vai no slot.
 </template>
 
 <script setup>
-import { Button } from '@munhoz/ui'
+import { Button } from '@joaosto/ui'
 </script>
 ```
 
@@ -133,7 +132,7 @@ import { Button } from '@munhoz/ui'
 
 <script setup>
 import { ref } from 'vue'
-import { Input } from '@munhoz/ui'
+import { Input } from '@joaosto/ui'
 
 const terminalInputValue = ref('')
 const numberInputValue = ref('')
@@ -173,3 +172,17 @@ Gera `dist/` (ES + UMD + CSS) para consumidores que não compilam SFC:
 ```bash
 npm run build
 ```
+
+## Publicação
+
+Autentique uma vez com um PAT classic (`write:packages`, `read:packages`, `repo`) no `~/.npmrc`:
+
+```
+//npm.pkg.github.com/:_authToken=SEU_TOKEN
+```
+
+```bash
+npm publish
+```
+
+Ou crie um Release no GitHub: o workflow publica automaticamente. Suba o `version` no `package.json` antes de cada publicação.
