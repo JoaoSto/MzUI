@@ -1,6 +1,6 @@
 # @joaosto/ui
 
-Kit de UI Vue 3 (botões e inputs) extraído do Design Lab. Visual dark, fonte monoespaçada, ícones Remixicon.
+Kit de UI Vue 3 (botões e inputs) + ícones Remixicon.
 
 Requer **Vue 3.5+**, **Vite** (para compilar os SFCs) e **Remixicon**.
 
