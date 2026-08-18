@@ -189,7 +189,9 @@ npm run build
 
 ## Publicação
 
-Autentique uma vez com um PAT classic (`write:packages`, `read:packages`, `repo`) no `~/.npmrc`:
+Cada PR mergeado em `master` publica uma versão nova (tag git + GitHub Packages). O bump é **patch** por omissão; usa as labels `minor` ou `major` no PR para outro nível.
+
+Publicação manual:
 
 ```
 //npm.pkg.github.com/:_authToken=SEU_TOKEN
@@ -199,4 +201,4 @@ Autentique uma vez com um PAT classic (`write:packages`, `read:packages`, `repo`
 npm publish
 ```
 
-Ou crie um Release no GitHub: o workflow publica automaticamente. Suba o `version` no `package.json` antes de cada publicação.
+O token local é um PAT classic (`write:packages`, `read:packages`, `repo`). Não republicar a mesma versão.

@@ -1,23 +1,49 @@
 name: Publish package
 
 on:
-  release:
-    types: [created]
+  pull_request:
+    types: [closed]
+    branches: [master]
 
 jobs:
   publish:
+    if: github.event.pull_request.merged == true
     runs-on: ubuntu-latest
     permissions:
-      contents: read
+      contents: write
       packages: write
     steps:
       - uses: actions/checkout@v4
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+
       - uses: actions/setup-node@v4
         with:
           node-version: 20
           registry-url: https://npm.pkg.github.com
           scope: '@joaosto'
+
       - run: npm ci
-      - run: npm publish
+
+      - name: Escolher bump
+        id: bump
+        env:
+          LABELS: ${{ join(github.event.pull_request.labels.*.name, ' ') }}
+        run: |
+          if echo "$LABELS" | grep -qw major; then
+            echo "level=major" >> "$GITHUB_OUTPUT"
+          elif echo "$LABELS" | grep -qw minor; then
+            echo "level=minor" >> "$GITHUB_OUTPUT"
+          else
+            echo "level=patch" >> "$GITHUB_OUTPUT"
+          fi
+
+      - name: Bump version, tag and publish
         env:
           NODE_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          npm version ${{ steps.bump.outputs.level }} -m "[CHANGE] Release %s"
+          git push --follow-tags
+          npm publish
