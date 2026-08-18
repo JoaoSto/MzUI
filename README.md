@@ -6,18 +6,17 @@ Requer **Vue 3.5+**, **Vite** (para compilar os SFCs) e **Remixicon**.
 
 ## Instalação
 
-Pacote privado no [GitHub Packages](https://github.com/JoaoSto/MzUI/pkgs/npm/ui). No projeto consumidor, crie um `.npmrc`:
-
-```
-@joaosto:registry=https://npm.pkg.github.com
-//npm.pkg.github.com/:_authToken=${NODE_AUTH_TOKEN}
-```
-
-O token é um [PAT classic](https://github.com/settings/tokens) com `read:packages` e `repo`. Coloque-o em `NODE_AUTH_TOKEN` ou no `~/.npmrc` (não commite o token).
+O repositório é público. Instale direto do GitHub (sem token):
 
 ```bash
-npm install @joaosto/ui
+npm install github:JoaoSto/MzUI
 npm install vue remixicon
+```
+
+Versão fixa (recomendado):
+
+```bash
+npm install github:JoaoSto/MzUI#v0.1.0
 ```
 
 No `vite.config.js` do app:
@@ -41,10 +40,25 @@ import App from './App.vue'
 createApp(App).mount('#app')
 ```
 
-Desenvolvimento local, sem publicar:
+Desenvolvimento local:
 
 ```bash
 npm install ../MzUI
+```
+
+### GitHub Packages (opcional)
+
+O registry `npm.pkg.github.com` exige autenticação mesmo com o repo público. No projeto consumidor, `.npmrc`:
+
+```
+@joaosto:registry=https://npm.pkg.github.com
+//npm.pkg.github.com/:_authToken=${NODE_AUTH_TOKEN}
+```
+
+Use um [PAT classic](https://github.com/settings/tokens) com `read:packages` em `NODE_AUTH_TOKEN` ou no `~/.npmrc` (não commite o token).
+
+```bash
+npm install @joaosto/ui
 ```
 
 ## Uso
